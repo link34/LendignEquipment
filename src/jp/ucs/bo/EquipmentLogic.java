@@ -89,4 +89,8 @@ public class EquipmentLogic {
         equipmentDao.deleteByID(memberId);       
         return true;
     }
+    public List<Equipment> getAllCategory() throws DBException {
+        List<Equipment> equipmentList = equipmentDao.findAllCategory();
+        return equipmentList;
+    }
 }

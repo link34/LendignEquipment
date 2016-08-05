@@ -3,6 +3,25 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html lang="ja">
 <head>
+<style>
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+</style>
 <meta charset="utf-8" />
 <title>貸出機器管理システム</title>
 <link rel="stylesheet"
@@ -13,13 +32,11 @@
 	src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/i18n/jquery.ui.datepicker-ja.min.js"></script>
 <link rel="stylesheet" href="/demos/style.css" />
 <script>
-	$(function() {
-		$("#datepicker").datepicker({
-			onSelect : function(date, picker) {
-				alert(date);
-			}
-		});
-	})
+$(function() {
+    $("#datepicker").datepicker({
+        dateFormat : "yy-mm-dd"
+    }).val()
+});
 </script>
 <script>
 	function submitForm() {
@@ -106,6 +123,7 @@
 							<th width="200">貸出日付</th>
 							<th width="200">機器の状況</th>
 							<th width="200">機器異動理由</th>
+							<th width="200">変更</th>
 						</tr>
 						<c:forEach items="${borrowList}" var="borrowList">
 							<tr>

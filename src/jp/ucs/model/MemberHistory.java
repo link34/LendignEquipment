@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class MemberHistory implements Serializable {
+    private int borrowId;
     private String memberId; 
     private String memberName;
     private String depertmentId;
@@ -90,6 +91,12 @@ public class MemberHistory implements Serializable {
     }
     public void setMemberId(String memberId) {
         this.memberId = memberId;
+    }
+    public int getBorrowId() {
+        return borrowId;
+    }
+    public void setBorrowId(int borrowId) {
+        this.borrowId = borrowId;
     }
     
     

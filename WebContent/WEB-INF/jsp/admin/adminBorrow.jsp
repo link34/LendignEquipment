@@ -3,6 +3,24 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html lang="ja">
 <head>
+<style>
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+</style>
 <meta charset="utf-8" />
 <title>貸出機器管理システム</title>
 <link rel="stylesheet"
@@ -122,6 +140,7 @@
 									value="${equipment.equipmentId}"> <input
 									style="width: 100px" onclick="borrowMsg()" type="submit"
 									value="貸出"></td>
+									
 								<td width="200" align="center">
 									<button style="width: 100px" type="submit"
 										onclick="popupCenter('PageChangeServlet?action=equipChange&equipmentId=${equipment.equipmentId}', 'myPop1',450,450);"

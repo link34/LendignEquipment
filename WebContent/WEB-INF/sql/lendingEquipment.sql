@@ -29,8 +29,8 @@ CREATE TABLE member (
   CONSTRAINT departmentid
     FOREIGN KEY (departmentid)
     REFERENCES department (departmentid)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+    ON DELETE cascade
+    ON UPDATE cascade);
 
 -- -----------------------------------------------------
 -- Table `LendingEquipment`.`Equipment`
@@ -44,8 +44,8 @@ CREATE TABLE Equipment (
   CONSTRAINT categoryid
     FOREIGN KEY (categoryid)
     REFERENCES category (categoryid)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+    ON DELETE cascade
+    ON UPDATE cascade);
 -- -----------------------------------------------------
 -- Table `LendingEquipment`.`borrowEquipment`
 -- -----------------------------------------------------
@@ -60,13 +60,13 @@ CREATE TABLE borrowEquipment (
   CONSTRAINT memberid
     FOREIGN KEY (memberid)
     REFERENCES member (memberid)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE cascade
+    ON UPDATE cascade,
   CONSTRAINT equipmentid
     FOREIGN KEY (equipmemtid)
     REFERENCES Equipment (equipmemtid)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+    ON DELETE cascade
+    ON UPDATE cascade);
 
 Insert into member(memberid,pass,membername,iskaiinn,departmentid) values ('EM-001','12345678','桜',false,'DE-003');
 Insert into member(memberid,pass,membername,iskaiinn,departmentid) values ('EM-002','12345678','サボ',false,'DE-004');

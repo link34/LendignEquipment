@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class Member implements Serializable {
     private String Id;
     private String pass;
+    private String memberName;
     private String depertmentId;
     private String depertmentName;
     private boolean iskaiinn;    
@@ -34,11 +35,11 @@ public class Member implements Serializable {
      * @param depertmentName
      * @param iskaiinn
      */
-    public Member(String id, String pass, String depertmentId, String depertmentName, boolean iskaiinn) {
+    public Member(String id, String pass, String depertmentId, String memberName, boolean iskaiinn) {
         this.Id = id;
         this.pass = pass;
         this.depertmentId = depertmentId;
-        this.depertmentName = depertmentName;
+        this.memberName = memberName;
         this.iskaiinn = iskaiinn;
     }
     public String getId() {
@@ -70,6 +71,12 @@ public class Member implements Serializable {
     }
     public void setIskaiinn(boolean iskaiinn) {
         this.iskaiinn = iskaiinn;
+    }
+    public String getMemberName() {
+        return memberName;
+    }
+    public void setMemberName(String memberName) {
+        this.memberName = memberName;
     }
     
     

@@ -13,7 +13,9 @@ import javax.servlet.http.HttpSession;
 
 import jp.ucs.DBException.DBException;
 import jp.ucs.bo.EquipmentLogic;
+import jp.ucs.bo.MemberLogic;
 import jp.ucs.model.Equipment;
+import jp.ucs.model.MemberHistory;
 
 /**
  * Servlet implementation class PageChangeServlet
@@ -27,10 +29,14 @@ public class PageChangeServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        String equipmentId = request.getParameter("equipmentId");        
+        String equipmentId = request.getParameter("equipmentId");    
+        String borrowId = request.getParameter("borrowId"); 
         EquipmentLogic equipmentLogic = new EquipmentLogic();
-        Equipment equipment = new Equipment();
+        MemberLogic memberLogic = new MemberLogic();
+        Equipment equipment = new Equipment();   
+        MemberHistory memberHistory = new MemberHistory();
         List<Equipment> equipmentList = new ArrayList<Equipment>();
+        List<MemberHistory> memberList = new ArrayList<MemberHistory>();
         HttpSession session = request.getSession();
         
         if (action.equals("popup")) {
@@ -59,10 +65,14 @@ public class PageChangeServlet extends HttpServlet {
             }
         } else if (action.equals("employeeChange")) {
             try {
-                equipmentList = equipmentLogic.getAllEquipment();
+                memberHistory = memberLogic.getMemberwithId(borrowId);                
+                session.setAttribute("member", memberHistory);
+                
+                equipmentList = equipmentLogic.getAllCategory();
                 session.setAttribute("equipmentList", equipmentList);
+                
                 request.getRequestDispatcher("/WEB-INF/jsp/admin/adminEditEmployee.jsp").forward(request, response);
-            } catch (NullPointerException | DBException e) {
+            } catch (NumberFormatException | NullPointerException | DBException e) {
                 e.printStackTrace();
             }
         } else if (action.equals("equipChange")) {
@@ -71,16 +81,20 @@ public class PageChangeServlet extends HttpServlet {
                 session.setAttribute("equipmentList", equipmentList);
                 request.getRequestDispatcher("/WEB-INF/jsp/admin/adminEditEquipment.jsp").forward(request, response);
             } catch (NullPointerException | DBException e) {
-                e.printStackTrace();
+                e.printStackTrace();    
             }
-        } else if (action.equals("addEmployee")) {
+        } else if (action.equals("addEmployee")) { 
             try {
-                equipmentList = equipmentLogic.getAllEquipment();
+              //部門名
+                memberList = memberLogic.getAllDepartemt();
+                session.setAttribute("departmentList", memberList);
+              //カテゴリ名
+                equipmentList = equipmentLogic.getAllCategory();
                 session.setAttribute("equipmentList", equipmentList);
-                request.getRequestDispatcher("/WEB-INF/jsp/admin/adminAddEmployee.jsp").forward(request, response);
-            } catch (NullPointerException | DBException e) {
-                e.printStackTrace();
-            }
+            } catch (DBException e) {
+               e.printStackTrace();
+            }            
+                request.getRequestDispatcher("/WEB-INF/jsp/admin/adminAddEmployee.jsp").forward(request, response);            
         }
     }
 }

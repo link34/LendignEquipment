@@ -11,8 +11,8 @@
 		}
 	function check() {
 	alert("管理者貸出の変更完了しました。");
-	opener.reload();
-	window.close();
+	window.opener.location.reload(true);
+    window.close();
 	}
   </script>
 	<title></title>

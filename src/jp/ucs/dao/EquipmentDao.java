@@ -162,6 +162,8 @@ public class EquipmentDao extends DAOBase {
                     equipment.setBorrowId(rs.getInt(8));
                     equipmentList.add(equipment);
                 }
+            }else if(name.equals("employee")){
+                
             }
 
         } catch (SQLException e) {
@@ -191,8 +193,7 @@ public class EquipmentDao extends DAOBase {
                     + "join category on equi.categoryid = category.categoryid where equipmemtid ='"
                     + equipmentId.trim() + "' order by equi.borrowId asc;";
 
-            PreparedStatement pstm = conn.prepareStatement(sql);
-            System.out.println(sql);
+            PreparedStatement pstm = conn.prepareStatement(sql);            
             ResultSet rs = pstm.executeQuery();
             while (rs.next()) {
                 equipment = new Equipment();
@@ -227,15 +228,12 @@ public class EquipmentDao extends DAOBase {
             String sql = "INSERT INTO borrowequipment(memberid,equipmemtid,borrowdate) "
                     + "VALUES('" + borrow.getMemberID().trim() + "','" + borrow.getEquipmentID().trim() + "','" + today
                     + "');"
-                    + "Update equipment set status = '使用中' where equipmemtid ='" + borrow.getEquipmentID().trim()
-                    + "';";
+                    + "Update equipment set status = '使用中' where equipmemtid ='" + borrow.getEquipmentID().trim() + "';";
 
             PreparedStatement pStmt = conn.prepareStatement(sql);
             System.out.println(sql);
             //INSERT文を実行
             int result = pStmt.executeUpdate();
-
-            System.out.println(result);
             if (result != 1) {
                 return false;
             }
@@ -261,7 +259,6 @@ public class EquipmentDao extends DAOBase {
             String dateString = df.format(Calendar.getInstance().getTime());
             Date date = df.parse(dateString);
             java.sql.Date returnDate = new java.sql.Date(date.getTime());
-            System.out.println(returnDate);
             String sql = "";
             if (equipment.getStatus().equals("返却")) {
                 sql = "Update equipment set status='" + equipment.getStatus() + "' "
@@ -272,7 +269,6 @@ public class EquipmentDao extends DAOBase {
                 sql = "Update borrowEquipment set comment='" + equipment.getComment() + "' "
                         + "where borrowid=" + equipment.getBorrowId() + ";";
             }
-            System.out.println(sql);
             PreparedStatement pstm = conn.prepareStatement(sql);
             pstm.executeUpdate();
         } catch (SQLException | NullPointerException e) {
@@ -302,7 +298,6 @@ public class EquipmentDao extends DAOBase {
                     + "where borrowequipment.memberid = '" + memberId + "' and borrowdate ='" + datepicker + "';";
 
             PreparedStatement pstm = conn.prepareStatement(sql);
-            System.out.println(sql);
             ResultSet rs = pstm.executeQuery();
             Equipment equipment;
             while (rs.next()) {
@@ -334,7 +329,6 @@ public class EquipmentDao extends DAOBase {
             pstm.setString(2, equipment.getEquipmentName());
             pstm.setString(3, "未使用");
             pstm.setString(4, equipment.getCategoryId().trim());
-            System.out.println(sql);
             //INSERT文を実行
             int result = pstm.executeUpdate();
             System.out.println(sql);
@@ -354,8 +348,9 @@ public class EquipmentDao extends DAOBase {
         try {
 
             String sql = "delete from member where id = ?";
+            System.out.println(sql);
             PreparedStatement pStmt = conn.prepareStatement(sql);
-            pStmt.setString(1, memberId);
+            pStmt.setString(1, memberId.trim());
             int result = pStmt.executeUpdate();
             if (result != 1) {
                 throw new DBException("ID" + "(" + memberId.trim() + ")に該当するデータはありません。");
@@ -374,5 +369,29 @@ public class EquipmentDao extends DAOBase {
             }
         }
         return true;
+    }
+
+    public List<Equipment> findAllCategory() throws DBException {
+        List<Equipment> equipmentList = new ArrayList<Equipment>();
+        try {
+            super.open();
+            String sql = "select * from category;";
+
+            PreparedStatement pstm = conn.prepareStatement(sql);
+            ResultSet rs = pstm.executeQuery();
+            Equipment equipment;
+            while (rs.next()) {
+                equipment = new Equipment();
+                
+                equipment.setCategoryId(rs.getString(1));
+                equipment.setCategoryName(rs.getString(2));
+                
+                equipmentList.add(equipment);
+            }
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+        return equipmentList;    
     }
 }
